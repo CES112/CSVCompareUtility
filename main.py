@@ -27,3 +27,6 @@ for c in csvStandard:
 
     comparisonFile.close()
 standardFile.close()
+
+tempRemoveFlag = input("Enter anything:")
+os.remove(tempCompareFileName)
