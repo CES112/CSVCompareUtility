@@ -19,6 +19,17 @@ def selectComparisonColumn (selectedFile):
     return selectedColumn
 
 
+def removeRow (tempFile, deleteLine):
+    lineCount =0
+    with open(tempFile, "r") as tF:
+        lines = tF.readlines()
+    with open(tempFile, "w") as tF:
+        for line in lines:
+            if (lineCount != deleteLine):
+                tF.write(line)
+            lineCount+=1
+    
+
 firstFile = input("Enter the location and filename of the first file:")
 compColumn1 = selectComparisonColumn(firstFile)
 
@@ -34,19 +45,21 @@ tempCompareFileName=('temp-compare-'+timeStampString)
 print(tempCompareFileName)
 os.system("cp "+secFile +" "+tempCompareFileName)
 
-compColumn=0
-for c in csvStandard:
 
+for c in csvStandard:
+    compColumn=0
     comparisonFile = open(tempCompareFileName)
     csvCompare = csv.reader(comparisonFile)
     for row in csvCompare:
+        compColumn +=1
         if c[compColumn1]==row[compColumn2]:
             print("match:"+ row[compColumn2])
-            break
-        else:
-            print("no match")
+            print("line: "+ str(compColumn))
 
     comparisonFile.close()
+    removeRow (tempCompareFileName, (compColumn-1))
+
+
 standardFile.close()
 
 tempRemoveFlag = input("Enter anything:")
